@@ -1,16 +1,29 @@
 {
-  "name": "note-taker",
+  "name": "track_employme_hw12",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pacoavocado/track_employme_HW12.git"
+  },
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pacoavocado/track_employme_HW12/issues"
+  },
+  "homepage": "https://github.com/pacoavocado/track_employme_HW12#readme",
   "dependencies": {
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "path": "^0.12.7",
-    "uuid": "^8.3.2"
+    "fs": "0.0.1-security",
+    "inquirer": "^8.1.2",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
   }
 }
