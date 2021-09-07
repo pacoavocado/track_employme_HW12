@@ -5,7 +5,7 @@ USE employees_db;
 
 CREATE TABLE department (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  depatment_name VARCHAR(100) NOT NULL
+  department_name VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE emp_role (
