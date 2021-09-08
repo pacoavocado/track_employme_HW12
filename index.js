@@ -68,13 +68,31 @@ const init = () => {
         });
       }
       if (answers.first_Q = "Update Employee Role") {
-        SELECT
-        FROM
+        app.put('/api/emp_role/:id', (req, res) => {
+          const sql = `UPDATE emp_role SET title, salary = ? WHERE id = department_id`;
+          const params = [req.body.employee, req.params.id];
+
+          db.query(sql, params, (err, result) => {
+            if (err) {
+              res.status(400).json({ error: err.message });
+            } else if (!result.affectedRows) {
+              res.json({
+                message: 'role not found'
+              });
+            } else {
+              res.json({
+                message: 'success',
+                data: req.body,
+                changes: result.affectedRows
+              });
+            }
+          });
+        });
       }
       if (answers.first_Q = "View All Roles") {
-        // Read all movies
+        // Read all roles
         app.get('/api/emp_role', (req, res) => {
-          const sql = `SELECT id, title, salary AS title FROM movies`;
+          const sql = `SELECT id, title, salary FROM emp_role INNER JOIN employee ON emp_role.id = employee.role_id`;
 
           db.query(sql, (err, rows) => {
             if (err) {
@@ -153,7 +171,7 @@ const init = () => {
       }
       if (answers.first_Q = "Quit") {
 
-        promptUser()
+        
       }
 
       else {
