@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
-const fs = require('fs');
-const mysql = require('mysql')
+// const fs = require('fs');
+const mysql = require('mysql2')
 const express = require('express');
 const cTable = require('console.table');
 require('dotenv').config();
@@ -185,50 +185,27 @@ const init = () => {
 
 init();
 
-// Import our modular routers for notes 
-// const notesRouter = require('./reviews');
+// // get the client
+// const mysql = require('mysql2');
 
-
-// const app = express();
-
-// app.use('/notes', notesRouter);
-
-
-// module.exports = app;
-
-
-
-
-
-
-
-
-// // Create a Employee
-// app.post('/api/new-movie', ({ body }, res) => {
-//   const sql = `INSERT INTO movies (movie_name)
-//     VALUES (?)`;
-//   const params = [body.movie_name];
-
-//   db.query(sql, params, (err, result) => {
-//     if (err) {
-//       res.status(400).json({ error: err.message });
-//       return;
-//     }
-//     res.json({
-//       message: 'success',
-//       data: body
-//     });
-//   });
+// // create the connection to database
+// const connection = mysql.createConnection({
+//   host: 'localhost',
+//   user: 'root',
+//   database: 'test'
 // });
 
+// // execute will internally call prepare and query
+// connection.execute(
+//   'SELECT * FROM `table` WHERE `name` = ? AND `age` > ?',
+//   ['Rick C-137', 53],
+//   function(err, results, fields) {
+//     console.log(results); // results contains rows returned by server
+//     console.log(fields); // fields contains extra meta data about results, if available
 
-// // GET Route for homepage
-// app.get('/', (req, res) =>
-//   res.sendFile(path.join(__dirname, '/public/index.html'))
-// );
-// // GET Route for notes page
-// app.get('/notes', (req, res) =>
-//   res.sendFile(path.join(__dirname, '/public/notes.html'))
+//     // If you execute same statement again, it will be picked from a LRU cache
+//     // which will save query preparation time and give better performance
+//   }
 // );
 
 app.listen(PORT, () =>
