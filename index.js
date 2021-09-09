@@ -1,9 +1,12 @@
 const inquirer = require('inquirer');
-const mysql = require('mysql2')
+const mysql = require('mysql2/promise');
 require('console.table');
 
+
+init()
 // Connect to database
-const db = mysql.createConnection(
+async function init() {
+const db = await mysql.createConnection(
   {
     host: 'localhost',
     // MySQL username,
@@ -51,10 +54,10 @@ inquirer
         break;
       default:
     }
-  };
+  });
 
 function viewAllEmp() {
-  const newEmployee = db.query(`SELECT * FROM employee`);
+  const newEmployee = await db.query(`SELECT * FROM employee`);
   console.table(newEmployee);
 }
 
@@ -131,4 +134,4 @@ function addDept() {
     });
 };
 
-
+};
