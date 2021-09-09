@@ -1,9 +1,6 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql2')
-const cTable = require('console.table');
-// const { Department, Role, Employee } = require('../../models');
-
-
+require('console.table');
 
 // Connect to database
 const db = mysql.createConnection(
@@ -56,48 +53,46 @@ inquirer
     }
   };
 
-
-
 function viewAllEmp() {
-      const newEmployee = db.query(`SELECT * FROM employee`)
-      console.table(newEmployee)
-    }
+  const newEmployee = db.query(`SELECT * FROM employee`);
+  console.table(newEmployee);
+}
 
 function viewAllDept() {
-      const depAnswer = db.query(`SELECT * FROM department`);
-      console.table(depAnswer);
-    }
+  const depAnswer = db.query(`SELECT * FROM department`);
+  console.table(depAnswer);
+}
 
 function viewAllRoles() {
-      const allRoles = db.query(`SELECT * FROM emp_role`);
-      console.table(allRoles);
-    }
+  const allRoles = db.query(`SELECT * FROM emp_role`);
+  console.table(allRoles);
+}
 
 function addEmp() {
-      inquirer
-        .prompt([
-          {
-            type: 'input',
-            message: 'enter new employee first name',
-            name: 'first_name'
-          },
-          {
-            type: 'input',
-            message: 'enter new employee last name',
-            name: 'last_name'
-          }
-        ])
-        .then((answers) => {
-          const newEmp = answers.first_name;
-          const newEmp2 = answers.last_name;
-          db.query('INSERT INTO employee SET first_name = answers.first_name SET last_name = answers.last_name')
-        }) 
+  inquirer
+    .prompt([
+      {
+        type: 'input',
+        message: 'enter new employee first name',
+        name: 'first_name'
+      },
+      {
+        type: 'input',
+        message: 'enter new employee last name',
+        name: 'last_name'
+      }
+    ])
+    .then((answers) => {
+      const newEmp = answers.first_name;
+      const newEmp2 = answers.last_name;
+      db.query(`INSERT INTO employee SET first_name = ${newEmp} SET last_name = ${newEmp2}`)
+    });
 
-    }
+}
 
 function updateEmpRole() {
 
-    }
+}
 
 function addRole() {
   inquirer
@@ -115,25 +110,25 @@ function addRole() {
     ])
     .then((answers) => {
       const newPay = answers.new_pay
-      db.query('INSERT INTO emp_role SET title = answers.new', newPay)
+      db.query(`INSERT INTO emp_role SET title = ${newPay}`, newPay)
     });
 
 
-    }
+}
 
 function addDept() {
   inquirer
     .prompt([
       {
-        type:'input',
+        type: 'input',
         message: 'enter a new department',
         name: 'new_dept'
       }
     ])
     .then((answers) => {
       const newDept = answers.new_dept
-      db.query('INSERT INTO department SET department_name = new_dept')
-    })
-    }
+      db.query(`INSERT INTO department SET department_name = ${newDept}`)
+    });
+};
 
 
