@@ -1,18 +1,8 @@
 const inquirer = require('inquirer');
-// const fs = require('fs');
 const mysql = require('mysql2')
-const express = require('express');
 const cTable = require('console.table');
-const { Department, Role, Employee } = require('../../lib')
-// require('dotenv').config();
-// create writeFile function using promises instead of a callback function
-// const writeFileAsync = util.promisify(fs.writeFile);
+// const { Department, Role, Employee } = require('../../models');
 
-const PORT = process.env.PORT || 3001;
-const app = express();
-
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
 
 
 // Connect to database
@@ -38,175 +28,112 @@ inquirer
     },
   ])
   .then((answers) => {
-    if (answers.first_Q = "View All Employees") {
-      console.table(employee)
+    switch (answers) {
+      case "View All Employees":
+        viewAllEmp();
+        break;
+      case "Add Employee":
+        addEmp();
+        break;
+      case "Update Employee Role":
+        updateEmpRole();
+        break;
+      case "View All Roles":
+        viewAllRoles();
+        break;
+      case "Add Role":
+        addRole();
+        break;
+      case "View All Departments":
+        viewAllDept();
+        break;
+      case "Add Department":
+        addDept();
+        break;
+      case "Quit":
+        break;
+      default:
     }
-    if (answers.first_Q = "Add Employee") {
-      app.put('/api/employee/:id', (req, res) => {
-        const sql = `UPDATE employee SET first_name, last_name = ? WHERE id = ?`;
-        const params = [req.body.employee, req.params.id];
+  };
 
-        db.query(sql, params, (err, result) => {
-          if (err) {
-            res.status(400).json({ error: err.message });
-          } else if (!result.affectedRows) {
-            res.json({
-              message: 'employee not found'
-            });
-          } else {
-            res.json({
-              message: 'success',
-              data: req.body,
-              changes: result.affectedRows
-            });
+
+
+function viewAllEmp() {
+      const newEmployee = db.query(`SELECT * FROM employee`)
+      console.table(newEmployee)
+    }
+
+function viewAllDept() {
+      const depAnswer = db.query(`SELECT * FROM department`);
+      console.table(depAnswer);
+    }
+
+function viewAllRoles() {
+      const allRoles = db.query(`SELECT * FROM emp_role`);
+      console.table(allRoles);
+    }
+
+function addEmp() {
+      inquirer
+        .prompt([
+          {
+            type: 'input',
+            message: 'enter new employee first name',
+            name: 'first_name'
+          },
+          {
+            type: 'input',
+            message: 'enter new employee last name',
+            name: 'last_name'
           }
-        });
-      });
-    }
-    if (answers.first_Q = "Update Employee Role") {
-      app.put('/api/emp_role/:id', (req, res) => {
-        const sql = `UPDATE emp_role SET title, salary = ? WHERE id = department_id`;
-        const params = [req.body.employee, req.params.id];
-
-        db.query(sql, params, (err, result) => {
-          if (err) {
-            res.status(400).json({ error: err.message });
-          } else if (!result.affectedRows) {
-            res.json({
-              message: 'role not found'
-            });
-          } else {
-            res.json({
-              message: 'success',
-              data: req.body,
-              changes: result.affectedRows
-            });
-          }
-        });
-      });
-    }
-    if (answers.first_Q = "View All Roles") {
-      // Read all roles
-      app.get('/api/emp_role', (req, res) => {
-        const sql = `SELECT id, title, salary FROM emp_role INNER JOIN employee ON emp_role.id = employee.role_id`;
-
-        db.query(sql, (err, rows) => {
-          if (err) {
-            res.status(500).json({ error: err.message });
-            return;
-          }
-          res.json({
-            message: 'success',
-            data: rows
-          });
-        });
-      });
+        ])
+        .then((answers) => {
+          const newEmp = answers.first_name;
+          const newEmp2 = answers.last_name;
+          db.query('INSERT INTO employee SET first_name = answers.first_name SET last_name = answers.last_name')
+        }) 
 
     }
-    if (answers.first_Q = "Add Role") {
-      app.put('/api/emp_role/:id', (req, res) => {
-        const sql = `UPDATE emp_role SET title = ? WHERE id = employee.id`;
-        const params = [req.body.emp_role, req.params.id];
 
-        db.query(sql, params, (err, result) => {
-          if (err) {
-            res.status(400).json({ error: err.message });
-          } else if (!result.affectedRows) {
-            res.json({
-              message: 'role not found'
-            });
-          } else {
-            res.json({
-              message: 'success',
-              data: req.body,
-              changes: result.affectedRows
-            });
-          }
-        });
-      });
-    }
-    if (answers.first_Q = "View All Departments") {
-      // Read all departments
-      app.get('/api/department', (req, res) => {
-        const sql = `SELECT id, department_name AS title FROM department`;
-
-        db.query(sql, (err, rows) => {
-          if (err) {
-            res.status(500).json({ error: err.message });
-            return;
-          }
-          res.json({
-            message: 'success',
-            data: rows
-          });
-        });
-      });
+function updateEmpRole() {
 
     }
-    if (answers.first_Q = "Add Department") {
-      app.put('/api/department/:id', (req, res) => {
-        const sql = `UPDATE department SET department_name = ? WHERE id = ?`;
-        const params = [req.body.department, req.params.id];
 
-        db.query(sql, params, (err, result) => {
-          if (err) {
-            res.status(400).json({ error: err.message });
-          } else if (!result.affectedRows) {
-            res.json({
-              message: 'department not found'
-            });
-          } else {
-            res.json({
-              message: 'success',
-              data: req.body,
-              changes: result.affectedRows
-            });
-          }
-        });
-      });
-    }
-    if (answers.first_Q = "Quit") {
+function addRole() {
+  inquirer
+    .prompt([
+      {
+        type: 'input',
+        message: 'enter new title',
+        name: 'new_role'
+      },
+      {
+        type: 'input',
+        message: 'enter annual salary',
+        name: 'new_pay'
+      }
+    ])
+    .then((answers) => {
+      const newPay = answers.new_pay
+      db.query('INSERT INTO emp_role SET title = answers.new', newPay)
+    });
 
 
     }
 
-    else {
-      promptUser()
+function addDept() {
+  inquirer
+    .prompt([
+      {
+        type:'input',
+        message: 'enter a new department',
+        name: 'new_dept'
+      }
+    ])
+    .then((answers) => {
+      const newDept = answers.new_dept
+      db.query('INSERT INTO department SET department_name = new_dept')
+    })
     }
-  })
 
-  .then(() => console.log('iS iTs WoRkInG?'))
-  .catch((err) => console.error(err));
-
-
-init();
-
-// // get the client
-// const mysql = require('mysql2');
-
-// // create the connection to database
-// const connection = mysql.createConnection({
-//   host: 'localhost',
-//   user: 'root',
-//   database: 'test'
-// });
-
-// // execute will internally call prepare and query
-// connection.execute(
-//   'SELECT * FROM `table` WHERE `name` = ? AND `age` > ?',
-//   ['Rick C-137', 53],
-//   function(err, results, fields) {
-//     console.log(results); // results contains rows returned by server
-//     console.log(fields); // fields contains extra meta data about results, if available
-
-//     // If you execute same statement again, it will be picked from a LRU cache
-//     // which will save query preparation time and give better performance
-//   }
-// );
-
-app.listen(PORT, () =>
-  console.log(`App listening at http://localhost:${PORT}`)
-);
-
-module.exports = app;
 
