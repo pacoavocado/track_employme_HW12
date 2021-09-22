@@ -88,9 +88,9 @@ async function init() {
           }
         ])
         .then((answers) => {
-          const newEmp = answers.first_name;
-          const newEmp2 = answers.last_name;
-          db.query(`INSERT INTO employee SET first_name = ${newEmp} SET last_name = ${newEmp2}`)
+          const firstName = answers.first_name;
+          const lastName = answers.last_name;
+          db.query(`INSERT INTO employee SET first_name = ${firstName} SET last_name = ${lastName}`)
         });
 
     }
