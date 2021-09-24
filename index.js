@@ -57,22 +57,24 @@ async function init() {
           default:
         }
       });
+     
 
     async function viewAllEmp() {
-      const newEmployee = await db.query(`SELECT * FROM employee`);
+      const [newEmployee, fields] = await db.query(`SELECT * FROM employee`);
+      console.log(newEmployee)
       console.table(newEmployee);
+      question();
     }
-
     async function viewAllDept() {
-      const depAnswer = await db.query(`SELECT * FROM department`);
+      const [depAnswer] = await db.query(`SELECT * FROM department`);
       console.table(depAnswer);
+      question();
     }
-
     async function viewAllRoles() {
-      const allRoles = await db.query(`SELECT * FROM emp_role`);
+      const [allRoles] = await db.query(`SELECT * FROM emp_role`);
       console.table(allRoles);
+      question();
     }
-
     function addEmp() {
       inquirer
         .prompt([
@@ -90,15 +92,16 @@ async function init() {
         .then((answers) => {
           const firstName = answers.first_name;
           const lastName = answers.last_name;
-          db.query(`INSERT INTO employee SET first_name = ${firstName} SET last_name = ${lastName}`)
+          const roleId = answers.role_id
+          db.query(`INSERT INTO employee SET first_name = ${firstName} SET last_name = ${lastName} SET role_id = ${roleId}`)
         });
 
+        question();  
     }
-
     function updateEmpRole() {
 
+      // question();
     }
-
     function addRole() {
       inquirer
         .prompt([
@@ -119,7 +122,7 @@ async function init() {
           db.query(`INSERT INTO emp_role SET title = ${newRole} SET salary = ${newPay}`)
         });
 
-
+        question();
     }
 
     function addDept() {
@@ -134,6 +137,7 @@ async function init() {
         .then((answers) => {
           const newDept = answers.new_dept
           db.query(`INSERT INTO department SET department_name = ${newDept}`)
+          question();
         });
     };
 
